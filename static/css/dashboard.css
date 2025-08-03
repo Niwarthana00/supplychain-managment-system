@@ -1,0 +1,234 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #161625;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar-header h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar-nav ul li a {
+    color: #b0b0b0;
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar-nav ul li a i {
+    margin-right: 10px;
+}
+
+.sidebar-nav ul li.active a,
+.sidebar-nav ul li a:hover {
+    background-color: #e94560;
+    color: #fff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #fff;
+}
+
+.user-info span {
+    font-size: 1em;
+    color: #b0b0b0;
+}
+
+/* Form Styles */
+.form-section {
+    background-color: #1f1f3a;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #2d2d4a;
+    border-radius: 8px;
+    background-color: #161625;
+    color: #fff;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #e94560;
+    box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.2);
+}
+
+.form-group input::placeholder {
+    color: #666;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+input[type="datetime-local"] {
+    color-scheme: dark;
+}
+
+.btn-save {
+    background-color: #e94560;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btn-save:hover {
+    background-color: #d63d57;
+}
+
+.sales-summary h2,
+.sales-graph h2,
+.block-info h2 {
+    margin-bottom: 20px;
+}
+
+.sales-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: #1f1f3a;
+    padding: 20px;
+    border-radius: 10px;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.card p {
+    margin: 0;
+    color: #b0b0b0;
+}
+
+.card h3 {
+    margin: 10px 0;
+    font-size: 2em;
+    color: #fff;
+}
+
+.card .increase {
+    color: #4caf50;
+}
+
+.graph-container {
+    background-color: #1f1f3a;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.graph-container img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.block-info {
+    margin-top: 30px;
+}
+
+.block-details {
+    background-color: #1f1f3a;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.block-details p {
+    margin: 10px 0;
+}
+
+.analytics-section {
+    margin-top: 30px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.chart-card {
+    background-color: #1f1f3a;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.chart-card.full-width {
+    grid-column: span 2;
+}
+
+.chart-card img {
+    width: 100%;
+    border-radius: 10px;
+}

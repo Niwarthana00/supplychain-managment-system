@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="register-form">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <h1>Login</h1>
+            <form action="/login" method="post">
+                <input type="email" name="email" placeholder="Enter Your Email" required>
+                <input type="password" name="password" placeholder="Enter Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account ? <a href="{{ url_for('register') }}">Register</a></p>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/img.png') }}" alt="Food Supply Chain">
+        </div>
+    </div>
+</body>
+</html>

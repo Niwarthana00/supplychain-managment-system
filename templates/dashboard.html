@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Dashboard</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('register_product') }}"><i class="fas fa-box"></i> Register New Product</a></li>
+                    <li><a href="{{ url_for('product_history') }}"><i class="fas fa-history"></i> Product History</a></li>
+                    <li><a href="#"><i class="fas fa-search-location"></i> Track Product</a></li>
+                    <li><a href="{{ url_for('transfer_ownership') }}"><i class="fas fa-exchange-alt"></i> Transfer ownership</a></li>
+                    <li><a href="{{ url_for('analytics_page') }}"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Food Tracker application</h1>
+                <div class="user-info">
+                    <span>Login as a {{ role }}</span>
+                </div>
+            </header>
+            <section class="sales-summary">
+                <h2>Blockchain Stats</h2>
+                <div class="sales-cards">
+                    <div class="card">
+                        <p>Total Blocks</p>
+                        <h3>{{ chain_length }}</h3>
+                    </div>
+                    <div class="card">
+                        <p>Total Transactions</p>
+                        <h3>{{ total_transactions }}</h3>
+                    </div>
+                    {% if stats %}
+                    <div class="card">
+                        <p>Total Products</p>
+                        <h3>{{ stats.total_products }}</h3>
+                    </div>
+                    <div class="card">
+                        <p>Unique Products</p>
+                        <h3>{{ stats.unique_products }}</h3>
+                    </div>
+                    <div class="card">
+                        <p>Most Common Product</p>
+                        <h3>{{ stats.most_common_product }}</h3>
+                    </div>
+                    <div class="card">
+                        <p>Latest Transaction</p>
+                        <h3>{{ stats.latest_transaction }}</h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+            <section class="analytics-section">
+                <h2>Analytics Overview</h2>
+                <div class="charts-grid">
+                    {% if plot_url and plot_url.transactions_per_product %}
+                        <div class="chart-card full-width">
+                            <img src="data:image/png;base64,{{ plot_url.transactions_per_product }}" alt="Transactions per Product">
+                        </div>
+                    {% else %}
+                        <p>No analytics data available. Register a product to see analytics.</p>
+                    {% endif %}
+                </div>
+            </section>
+            <section class="block-info">
+                <h2>All Blocks</h2>
+                {% for block in chain %}
+                <div class="block-details">
+                    <h3>Block #{{ block.index }}</h3>
+                    <p><strong>Timestamp:</strong> {{ block.timestamp }}</p>
+                    <p><strong>Proof:</strong> {{ block.proof }}</p>
+                    <p><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
+                    <h4>Transactions:</h4>
+                    {% if block.transactions %}
+                        {% for tx in block.transactions %}
+                            <div class="transaction">
+                                <p><strong>Product ID:</strong> {{ tx.product_id }}</p>
+                                <p><strong>Product Name:</strong> {{ tx.product_name }}</p>
+                                <p><strong>Quantity:</strong> {{ tx.quantity }}</p>
+                                <p><strong>Owner:</strong> {{ tx.recipient }}</p>
+                                <p><strong>Timestamp:</strong> {{ tx.timestamp }}</p>
+                                <p><strong>Storage Temperature:</strong> {{ tx.storage_temperature }}</p>
+                                <p><strong>Humidity:</strong> {{ tx.humidity }}</p>
+                                <p><strong>Location:</strong> {{ tx.location }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No transactions in this block.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

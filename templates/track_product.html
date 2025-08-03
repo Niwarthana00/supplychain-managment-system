@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="toast" class="toast {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Dashboard</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('register_product') }}"><i class="fas fa-box"></i> Register New Product</a></li>
+                    <li><a href="{{ url_for('product_history') }}"><i class="fas fa-history"></i> Product History</a></li>
+                    <li class="active"><a href="{{ url_for('track_product') }}"><i class="fas fa-search-location"></i> Track Product</a></li>
+                    <li><a href="{{ url_for('transfer_ownership') }}"><i class="fas fa-exchange-alt"></i> Transfer ownership</a></li>
+                    <li><a href="{{ url_for('analytics_page') }}"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Track Product</h1>
+                <div class="user-info">
+                    <span>Login as a {{ role }}</span>
+                </div>
+            </header>
+            <section class="form-section">
+                <form action="{{ url_for('track_product') }}" method="post">
+                    <div class="form-group">
+                        <label for="product_id">Product ID</label>
+                        <input type="text" id="product_id" name="product_id" placeholder="Enter Product ID" required>
+                    </div>
+                    <button type="submit" class="btn-save">Track</button>
+                </form>
+            </section>
+            {% if product_history %}
+            <section class="block-info">
+                <h2>Tracking Information for Product ID: {{ product_id }}</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Owner</th>
+                                <th>Timestamp</th>
+                                <th>Storage Temperature</th>
+                                <th>Humidity</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in product_history %}
+                            <tr>
+                                <td>{{ tx.product_id }}</td>
+                                <td>{{ tx.product_name }}</td>
+                                <td>{{ tx.quantity }}</td>
+                                <td>{{ tx.recipient }}</td>
+                                <td>{{ tx.timestamp }}</td>
+                                <td>{{ tx.storage_temperature }}</td>
+                                <td>{{ tx.humidity }}</td>
+                                <td>{{ tx.location }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% endif %}
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var toast = document.getElementById('toast');
+            if (toast) {
+                toast.className = "toast show";
+                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

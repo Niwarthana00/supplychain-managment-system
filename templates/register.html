@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="register-form">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <h1>Register Now !</h1>
+            <p>Create your account now to begin your wellness journey!</p>
+            <form action="/register" method="post">
+                <input type="text" name="fullname" placeholder="Enter Your Full Name" required>
+                <input type="email" name="email" placeholder="Enter Your Email" required>
+                <input type="password" name="password" placeholder="Create Password" required>
+                <select name="role" required>
+                    <option value="" disabled selected>Select Your Role</option>
+                    <option value="farmer">Farmer</option>
+                    <option value="distributor">Distributor</option>
+                    <option value="retailer">Retailer</option>
+                </select>
+                <input type="text" name="phone" placeholder="Enter Phone Number" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account ? <a href="{{ url_for('login') }}">Login</a></p>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/img.png') }}" alt="Food Supply Chain">
+        </div>
+    </div>
+</body>
+</html>
