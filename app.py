@@ -242,6 +242,13 @@ def transfer_ownership():
             
     return render_template('transfer_ownership.html', role=session['role'])
 
+@app.route('/logout')
+def logout():
+    session.pop('email', None)
+    session.pop('role', None)
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
+
 @app.route('/analytics')
 def analytics_page():
     if 'email' not in session:

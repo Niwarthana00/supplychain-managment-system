@@ -30,8 +30,22 @@ body {
     margin: 0;
 }
 
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure the ul takes full height of its parent */
+}
+
 .sidebar-nav ul li {
     margin-bottom: 15px;
+}
+
+.sidebar-nav ul li:last-child {
+    margin-top: auto; /* Pushes the last item to the bottom */
+    margin-bottom: 0;
 }
 
 .sidebar-nav ul li a {
