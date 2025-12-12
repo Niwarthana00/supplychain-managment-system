@@ -120,6 +120,26 @@ def register_product():
         if user:
             sender = user['public_key']
             
+            # Create transaction data for signing
+            transaction_data = {
+                'sender': sender,
+                'recipient': product_owner,
+                'product_id': product_batch_id,
+                'product_name': product_name,
+                'quantity': quantity,
+            }
+             # Add other fields that will be in kwargs
+            transaction_data.update({
+                'timestamp': timestamp,
+                'storage_temperature': storage_temperature,
+                'humidity': humidity,
+                'location': location
+            })
+            
+            # Sign the transaction
+            user_wallet = Wallet(user['private_key'])
+            signature = user_wallet.sign_transaction(transaction_data)
+            
             # Mine a new block to include the new product transaction
             last_block = blockchain.last_block
             last_proof = last_block['proof']
@@ -131,6 +151,8 @@ def register_product():
                 product_id=product_batch_id,
                 product_name=product_name,
                 quantity=quantity,
+                signature=signature.hex(),
+                public_key=sender,
                 timestamp=timestamp,
                 storage_temperature=storage_temperature,
                 humidity=humidity,

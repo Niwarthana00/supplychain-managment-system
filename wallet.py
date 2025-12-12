@@ -8,10 +8,15 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 
 class Wallet:
-    def __init__(self):
-        self.key_pair = RSA.generate(2048)
-        self.public_key = self.key_pair.publickey().export_key().decode('utf-8')
-        self.private_key = self.key_pair.export_key().decode('utf-8')
+    def __init__(self, private_key=None):
+        if private_key:
+            self.key_pair = RSA.import_key(private_key)
+            self.private_key = private_key
+            self.public_key = self.key_pair.publickey().export_key().decode('utf-8')
+        else:
+            self.key_pair = RSA.generate(2048)
+            self.public_key = self.key_pair.publickey().export_key().decode('utf-8')
+            self.private_key = self.key_pair.export_key().decode('utf-8')
 
     def sign_transaction(self, transaction):
         private_key = RSA.import_key(self.private_key)

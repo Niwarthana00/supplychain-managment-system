@@ -50,7 +50,7 @@ class Blockchain:
         
         return block
 
-    def new_transaction(self, sender, recipient, product_id, product_name, quantity, **kwargs):
+    def new_transaction(self, sender, recipient, product_id, product_name, quantity, signature=None, public_key=None, **kwargs):
         """
         Creates a new transaction to go into the next mined Block
         :param sender: <str> Address of the Sender
@@ -58,6 +58,8 @@ class Blockchain:
         :param product_id: <str> ID of the product
         :param product_name: <str> Name of the product
         :param quantity: <int> Quantity of the product
+        :param signature: <str> Digital signature of the transaction
+        :param public_key: <str> Public key of the sender
         :param kwargs: <dict> Additional transaction data
         :return: <int> The index of the Block that will hold this transaction
         """
@@ -69,6 +71,28 @@ class Blockchain:
             'quantity': quantity,
         }
         transaction.update(kwargs)
+
+        if sender != "0":
+            if not signature or not public_key:
+                print("Transaction missing signature or public key")
+                return False
+            
+            # Verify signature
+            # We reconstruct the exact string that was signed. 
+            # Ideally the frontend/caller should pass the data that was signed.
+            # Here we assume the caller signed the string representation of the transaction dict BEFORE signature was added.
+            from wallet import Wallet
+            try:
+                # Convert hex signature back to bytes for verification
+                signature_bytes = bytes.fromhex(signature)
+                if not Wallet.verify_signature(transaction, signature_bytes, public_key):
+                    print("Invalid Transaction Signature")
+                    return False
+            except ValueError:
+                print("Signature decoding failed")
+                return False
+        
+        transaction['signature'] = signature
         self.current_transactions.append(transaction)
         return self.last_block['index'] + 1
 
