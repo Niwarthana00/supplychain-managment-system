@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 from wallet import Wallet
 from blockchain import Blockchain
 from analytics import generate_plots
@@ -9,6 +10,8 @@ from uuid import uuid4
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+
+# ... (rest of imports and setup)
 
 # Instantiate the Blockchain
 blockchain = Blockchain()
@@ -45,7 +48,7 @@ def register():
             flash('Email already registered!', 'danger')
             return redirect(url_for('register'))
 
-        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        password_hash = generate_password_hash(password)
 
         new_wallet = Wallet()
         
@@ -69,7 +72,7 @@ def login():
         password = request.form['password']
         
         user = users.get(email)
-        if user and user['password_hash'] == hashlib.sha256(password.encode()).hexdigest():
+        if user and check_password_hash(user['password_hash'], password):
             session['email'] = email
             session['role'] = user['role']
             flash('Login successful!', 'success')
