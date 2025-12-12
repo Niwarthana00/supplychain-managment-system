@@ -53,4 +53,3 @@ This is a **Supply Chain Management System** built with **Python (Flask)** that 
 5.  **Analytics:** View real-time statistics on supply chain performance.
 
 ---
-*Developed for Interview/Portfolio Demonstration*
