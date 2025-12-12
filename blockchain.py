@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 from time import time
 from uuid import uuid4
 
@@ -8,8 +9,24 @@ class Blockchain:
         self.chain = []
         self.current_transactions = []
         self.nodes = set()
-        # Create the genesis block
-        self.new_block(previous_hash='1', proof=100)
+        
+        # Load chain if exists, else create genesis block
+        if os.path.exists('chain.json'):
+            self.load_chain()
+        else:
+            # Create the genesis block
+            self.new_block(previous_hash='1', proof=100)
+
+    def load_chain(self):
+        try:
+            with open('chain.json', 'r') as f:
+                self.chain = json.load(f)
+        except (ValueError, json.JSONDecodeError):
+             self.new_block(previous_hash='1', proof=100)
+
+    def save_chain(self):
+        with open('chain.json', 'w') as f:
+            json.dump(self.chain, f, indent=4)
 
     def new_block(self, proof, previous_hash=None):
         """
@@ -28,6 +45,9 @@ class Blockchain:
         # Reset the current list of transactions
         self.current_transactions = []
         self.chain.append(block)
+        
+        self.save_chain()
+        
         return block
 
     def new_transaction(self, sender, recipient, product_id, product_name, quantity, **kwargs):
@@ -72,8 +92,8 @@ class Blockchain:
         Simple Proof of Work Algorithm:
          - Find a number 'p' such that hash(pp') contains leading 4 zeroes, where p is the previous p'
          - p is the previous proof, and p' is the new proof
-        :param last_proof: <int>
-        :return: <int>
+         :param last_proof: <int>
+         :return: <int>
         """
         proof = 0
         while self.valid_proof(last_proof, proof) is False:
